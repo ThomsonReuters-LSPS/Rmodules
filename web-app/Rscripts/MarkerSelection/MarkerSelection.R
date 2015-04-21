@@ -146,7 +146,7 @@ aggregate.probes = FALSE
 	rownames(top.fit.ranked.decr) = NULL
 	
 	top.fit.ranked.decr.filt = top.fit.ranked.decr[1:numberOfMarkers,]
-	topgenes = cbind(gene.symbols[top.fit.ranked.decr.filt$ID], top.fit.ranked.decr.filt)
+	topgenes = cbind(gene.symbols[as.vector(top.fit.ranked.decr.filt$ID)], top.fit.ranked.decr.filt)
 	colnames(topgenes) = c("GENE_SYMBOL", "PROBE.ID", "logFC", "t", "P.value", "adj.P.val", "B")
 	rownames(topgenes) = NULL
 	
