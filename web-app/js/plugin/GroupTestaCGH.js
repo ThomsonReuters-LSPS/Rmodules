@@ -435,15 +435,23 @@ var GroupTestView = Ext.extend(GenericAnalysisView, {
                 // generate template
                 groupTestPlotTpl.overwrite(Ext.get('gtPlotWrapper'), region);
 
-                // generate download button
-                var exportBtn = new Ext.Button({
-                    text: 'Download Result',
-                    iconCls: 'downloadbutton',
-                    renderTo: 'downloadBtn',
-                    handler: function () {
-                        _this.downloadGroupTestResult(jobName);
-                    }
-                });
+                jQuery.get(pageInfo.basePath + '/dataExport/isCurrentUserAllowedToExport',
+                    {
+                        result_instance_id1: groupTestView.jobInfo.jobInputsJson.result_instance_id1,
+                        result_instance_id2: groupTestView.jobInfo.jobInputsJson.result_instance_id2
+                    },
+                    function(data) {
+                        if (data.result) {
+                            new Ext.Button({
+                                text: 'Download Result',
+                                iconCls: 'downloadbutton',
+                                renderTo: 'downloadBtn',
+                                handler: function () {
+                                    _this.downloadGroupTestResult(jobName);
+                                }
+                            });
+                        }
+                    });
             },
             params: {
                 jobName: jobName,
@@ -490,7 +498,7 @@ var GroupTestView = Ext.extend(GenericAnalysisView, {
                     // load using script tags for cross domain, if the data in on the same domain as
                     // this page, an HttpProxy would be better
                     proxy: new Ext.data.HttpProxy({
-                        url: "../aCGHgroupTest/resultTable"
+                        url: pageInfo.basePath + "/aCGHgroupTest/resultTable"
                     })
 
                 });
